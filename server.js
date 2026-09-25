@@ -5,13 +5,21 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 
+// الاتصال بقاعدة البيانات عبر متغير البيئة DATABASE_URL
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: { rejectUnauthorized: false }
 });
 
+// توجيه الخادم لقراءة ملفات الواجهة من مجلد public
 app.use(express.static(path.join(__dirname, 'public')));
 
+// تحويل الزائر تلقائياً لصفحة verify.html إذا فتح الرابط الرئيسي مباشرة
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'verify.html'));
+});
+
+// مسار فحص الرمز عبر API
 app.get('/api/verify-code', async (req, res) => {
     const { code } = req.query;
     if (!code) return res.json({ status: 'invalid' });
@@ -30,15 +38,15 @@ app.get('/api/verify-code', async (req, res) => {
             return res.json({
                 status: 'authentic',
                 productName: item.product_name,
-                message: 'تم التحقق من أصالة المنتج بنجاح لأول مرة.'
+                message: 'تم التحقق من أصالة وثيقة الطالب بنجاح.'
             });
         } else {
             await pool.query('UPDATE product_codes SET scan_count = scan_count + 1 WHERE code = $1', [code]);
             return res.json({
                 status: 'scanned_before',
                 productName: item.product_name,
-                message: `تنبيه: تم فحص هذا المنتج سابقاً (${item.scan_count}) مرة.`,
-                firstScanDate: new Date(item.scanned_at).toLocaleString('ar-EG')
+                message: `تنبيه: تم فحص وتأكيد هذه الوثيقة سابقاً (${item.scan_count}) مرة.`,
+                firstScanDate: new Date(item.scanned_at).toLocaleString('en-US')
             });
         }
     } catch (err) {
@@ -47,4 +55,4 @@ app.get('/api/verify-code', async (req, res) => {
     }
 });
 
-app.listen(port, () => console.log(`Server running on port ${port}`));
+app.listen(port, () => console.log(`Server is running on port ${port}`));
