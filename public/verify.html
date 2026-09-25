@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Document Verification - CIU</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #333333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center;
+        }
+
+        /* BANNER SECTION */
+        .hero-banner {
+            width: 100%;
+            height: 230px;
+            background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), 
+                        url('https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=1200&auto=format&fit=crop') center/cover no-repeat;
+            color: #ffffff;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-banner h2 {
+            color: #00ff66;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .hero-banner p {
+            font-size: 0.8rem;
+            line-height: 1.4;
+            color: #e2e8f0;
+            max-width: 600px;
+        }
+
+        .highlight-green {
+            background-color: #00ff66;
+            color: #000000;
+            padding: 2px 4px;
+            font-weight: 500;
+            display: inline;
+        }
+
+        /* MAIN CONTENT SECTION */
+        .main-container {
+            width: 100%;
+            max-width: 480px;
+            padding: 30px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo {
+            width: 220px;
+            height: auto;
+            margin-bottom: 25px;
+        }
+
+        .system-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 6px;
+        }
+
+        .sub-title {
+            font-size: 0.95rem;
+            color: #666666;
+            margin-bottom: 30px;
+        }
+
+        /* FORM INPUTS & BUTTONS */
+        .input-group {
+            width: 100%;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: #333;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-field:focus {
+            border-color: #6200ee;
+        }
+
+        .input-field::placeholder {
+            color: #8b7ca6;
+            font-style: italic;
+        }
+
+        .verify-btn {
+            background: linear-gradient(135deg, #6200ee, #5000ca);
+            color: #ffffff;
+            border: none;
+            padding: 12px 45px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(98, 0, 238, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .verify-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(98, 0, 238, 0.4);
+        }
+
+        /* RESULT BOX */
+        .result-box {
+            width: 100%;
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .result-box.success {
+            background-color: #e6f4ea;
+            color: #137333;
+            border: 1px solid #ceead6;
+        }
+
+        .result-box.warning {
+            background-color: #fef7e0;
+            color: #b06000;
+            border: 1px solid #feefc3;
+        }
+
+        .result-box.danger {
+            background-color: #fce8e6;
+            color: #c5221f;
+            border: 1px solid #fad2cf;
+        }
+
+        /* FOOTER */
+        .footer {
+            margin-top: auto;
+            padding: 25px 0;
+            text-align: center;
+        }
+
+        .footer a {
+            color: #6200ee;
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .footer p {
+            color: #6200ee;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP HERO BANNER -->
+    <div class="hero-banner">
+        <h2>Open for open minds</h2>
+        <p>More than 20,000 students from 110 different countries come together at CIU.</p>
+        <p style="margin-top: 5px;">
+            Not only has this diverse setting been one of our strengths, it also enabled us the opportunity to provide a 
+            <span class="highlight-green">multicultural learning environment for our students.</span>
+        </p>
+    </div>
+
+    <!-- MAIN FORM CONTAINER -->
+    <div class="main-container">
+        <!-- LOGO -->
+        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/08/Cyprus_International_University_logo.svg/1200px-Cyprus_International_University_logo.svg.png" 
+             alt="Cyprus International University" class="logo">
+
+        <h1 class="system-title">Student Recruitment System</h1>
+        <p class="sub-title">Candidate Document Verification</p>
+
+        <!-- INPUT FORM -->
+        <div class="input-group">
+            <input type="text" id="codeInput" class="input-field" placeholder="Verification Code">
+        </div>
+
+        <button onclick="verifyCode()" class="verify-btn">Verify</button>
+
+        <!-- RESULT AREA -->
+        <div id="resultBox" class="result-box"></div>
+    </div>
+
+    <!-- FOOTER LINKS -->
+    <div class="footer">
+        <a href="#">Cyprus International University</a>
+        <a href="#" style="color: #6200ee; opacity: 0.8;">Privacy Policy</a>
+    </div>
+
+    <script>
+        // التحقق التلقائي إذا كان الكود موجوّداً في رابط الصفحة (URL Query)
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const code = params.get('code');
+            if (code) {
+                document.getElementById('codeInput').value = code;
+                verifyCode();
+            }
+        };
+
+        // دالة الفحص والاتصال بالخادم
+        async function verifyCode() {
+            const codeInput = document.getElementById('codeInput').value.trim();
+            const resultBox = document.getElementById('resultBox');
+
+            if (!codeInput) {
+                resultBox.className = "result-box danger";
+                resultBox.style.display = "block";
+                resultBox.innerHTML = "<strong>Error:</strong> Please enter a verification code.";
+                return;
+            }
+
+            resultBox.className = "result-box";
+            resultBox.style.display = "block";
+            resultBox.style.backgroundColor = "#f1f5f9";
+            resultBox.style.color = "#333";
+            resultBox.innerHTML = "Verifying document authenticity...";
+
+            try {
+                const response = await fetch(`/api/verify-code?code=${encodeURIComponent(codeInput)}`);
+                const data = await response.json();
+
+                if (data.status === 'authentic') {
+                    resultBox.className = "result-box success";
+                    resultBox.innerHTML = `<strong> Authentic Document</strong><br>${data.productName}<br>${data.message}`;
+                } else if (data.status === 'scanned_before') {
+                    resultBox.className = "result-box warning";
+                    resultBox.innerHTML = `<strong>⚠️ Previously Verified</strong><br>${data.productName}<br>${data.message}<br><small>First scan date: ${data.firstScanDate}</small>`;
+                } else {
+                    resultBox.className = "result-box danger";
+                    resultBox.innerHTML = "<strong> Invalid Code</strong><br>This verification code is not found or invalid.";
+                }
+            } catch (err) {
+                resultBox.className = "result-box danger";
+                resultBox.innerHTML = "<strong>Connection Error:</strong> Unable to connect to verification system.";
+            }
+        }
+    </script>
+</body>
+</html>
