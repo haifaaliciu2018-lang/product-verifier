@@ -1,4 +1,3 @@
-# product-verifier
 {
   "name": "product-verifier",
   "version": "1.0.0",
