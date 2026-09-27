@@ -1,58 +1,97 @@
 const express = require('express');
-const { Pool } = require('pg');
+const { createClient } = require('@supabase/supabase-supabase-js'); // أو @supabase/supabase-js
 const path = require('path');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
-// الاتصال بقاعدة البيانات عبر متغير البيئة DATABASE_URL
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false }
-});
+// إعداد الاتصال بقاعدة بيانات Supabase باستخدام متغيرات البيئة
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_KEY = process.env.SUPABASE_KEY;
 
-// توجيه الخادم لقراءة ملفات الواجهة من مجلد public
+if (!SUPABASE_URL || !SUPABASE_KEY) {
+  console.error('Error: SUPABASE_URL and SUPABASE_KEY must be set in environment variables.');
+}
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// تقديم الملفات الثابتة من مجلد public (مثل verify.html)
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
 
-// تحويل الزائر تلقائياً لصفحة verify.html إذا فتح الرابط الرئيسي مباشرة
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'verify.html'));
-});
-
-// مسار فحص الرمز عبر API
+// API للتحقق من كود الوثيقة
 app.get('/api/verify-code', async (req, res) => {
-    const { code } = req.query;
-    if (!code) return res.json({ status: 'invalid' });
+  try {
+    const rawCode = req.query.code;
 
-    try {
-        const result = await pool.query('SELECT * FROM product_codes WHERE code = $1', [code]);
-        
-        if (result.rows.length === 0) {
-            return res.json({ status: 'not_found' });
-        }
-
-        const item = result.rows[0];
-
-        if (item.scan_count === 0) {
-            await pool.query('UPDATE product_codes SET scan_count = 1, scanned_at = NOW() WHERE code = $1', [code]);
-            return res.json({
-                status: 'authentic',
-                productName: item.product_name,
-                message: 'تم التحقق من أصالة وثيقة الطالب بنجاح.'
-            });
-        } else {
-            await pool.query('UPDATE product_codes SET scan_count = scan_count + 1 WHERE code = $1', [code]);
-            return res.json({
-                status: 'scanned_before',
-                productName: item.product_name,
-                message: `تنبيه: تم فحص وتأكيد هذه الوثيقة سابقاً (${item.scan_count}) مرة.`,
-                firstScanDate: new Date(item.scanned_at).toLocaleString('en-US')
-            });
-        }
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ status: 'error' });
+    if (!rawCode) {
+      return res.status(400).json({ status: 'invalid', message: 'Code is required' });
     }
+
+    const cleanCode = rawCode.trim();
+
+    // البحث عن الكود في جدول product_codes دون النظر لحالة الحروف (ilike)
+    const { data: record, error } = await supabase
+      .from('product_codes')
+      .select('*')
+      .ilike('code', cleanCode)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Supabase query error:', error);
+      return res.status(500).json({ status: 'error', message: 'Database error' });
+    }
+
+    // إذا لم يتم العثور على الكود
+    if (!record) {
+      return res.json({ status: 'not_found' });
+    }
+
+    const currentScanCount = (record.scan_count || 0) + 1;
+    const now = new Date().toISOString();
+
+    // تحديث عدد مرات الفحص وتاريخ أول فحص إذا كانت هذه المرة الأولى
+    const updateData = { scan_count: currentScanCount };
+    if (!record.scanned_at) {
+      updateData.scanned_at = now;
+    }
+
+    await supabase
+      .from('product_codes')
+      .update(updateData)
+      .eq('id', record.id);
+
+    // إذا كان الفحص للمرة الأولى
+    if (currentScanCount === 1) {
+      return res.json({
+        status: 'authentic',
+        productName: record.product_name,
+        documentUrl: record.document_url,
+        message: 'This document is verified and authentic.'
+      });
+    } else {
+      // إذا تم فحص المستند سابقاً
+      return res.json({
+        status: 'scanned_before',
+        productName: record.product_name,
+        documentUrl: record.document_url,
+        scanCount: currentScanCount,
+        firstScanDate: record.scanned_at || now,
+        message: 'This document has been verified previously.'
+      });
+    }
+
+  } catch (err) {
+    console.error('Server error:', err);
+    return res.status(500).json({ status: 'error', message: 'Internal server error' });
+  }
 });
 
-app.listen(port, () => console.log(`Server is running on port ${port}`));
+// توجيه الصفحة الرئيسية لملف verify.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'verify.html'));
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
