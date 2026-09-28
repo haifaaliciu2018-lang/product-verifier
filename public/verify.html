@@ -1,94 +1,164 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>نظام استقطاب الطلاب - التحقق من المستندات</title>
+  <title>CIU - Document Verification</title>
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f8f9fa;
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background-color: #ffffff;
+      color: #333333;
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
     }
-    .header-img {
+
+    /* الصورة العلوية الهيدر */
+    .header-banner {
       width: 100%;
-      max-height: 180px;
-      object-fit: cover;
+      max-width: 600px;
+      display: block;
     }
-    .container {
-      background: #ffffff;
-      margin-top: 20px;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      width: 90%;
-      max-width: 480px;
+
+    .main-container {
+      width: 100%;
+      max-width: 500px;
+      padding: 20px 25px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
     }
+
+    /* الشعار */
     .logo {
-      width: 80px;
-      margin-bottom: 15px;
+      width: 120px;
+      margin: 15px 0 25px 0;
     }
-    h2 {
-      margin: 10px 0 5px;
-      color: #333;
+
+    /* حقل إدخال رمز التحقق (خط أسفل فقط بدون صندوق) */
+    .input-group {
+      width: 100%;
+      margin-bottom: 10px;
+      text-align: left;
     }
-    p.sub {
-      color: #666;
+
+    .verification-input {
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid #cccccc; /* خط شفاف أسفل الحقل */
+      padding: 10px 5px;
+      font-size: 16px;
+      outline: none;
+      background: transparent;
+      color: #333333;
+      transition: border-color 0.3s;
+    }
+
+    .verification-input:focus {
+      border-bottom-color: #0056b3;
+    }
+
+    /* رسالة الرد عند عدم العثور على الكود */
+    .error-msg {
+      color: #d9534f;
       font-size: 14px;
-      margin-bottom: 25px;
-    }
-    .status-box {
-      padding: 15px;
-      border-radius: 8px;
-      margin: 20px 0;
-      font-size: 15px;
-      font-weight: bold;
+      margin-top: 8px;
+      text-align: left;
+      width: 100%;
       display: none;
     }
-    .status-authentic {
-      background-color: #e6f4ea;
-      color: #137333;
-      border: 1px solid #ceead6;
+
+    .status-msg {
+      font-size: 14px;
+      margin-top: 8px;
+      text-align: left;
+      width: 100%;
+      display: none;
     }
-    .status-warning {
-      background-color: #fef7e0;
-      color: #b06000;
-      border: 1px solid #feefc3;
-    }
-    .status-error {
-      background-color: #fce8e6;
-      color: #c5221f;
-      border: 1px solid #fad2cf;
-    }
-    .btn-pdf {
-      display: inline-block;
+
+    /* زر التأكيد/التحقق */
+    .btn-submit {
+      margin-top: 25px;
       background-color: #6f42c1;
       color: #ffffff;
-      padding: 12px 28px;
-      border-radius: 25px;
-      text-decoration: none;
+      border: none;
+      padding: 10px 30px;
+      border-radius: 20px;
+      font-size: 15px;
+      cursor: pointer;
       font-weight: bold;
-      margin-top: 15px;
-      transition: background 0.3s;
     }
-    .btn-pdf:hover {
-      background-color: #593196;
+
+    /* قسم الروابط السفلي */
+    .footer-links {
+      margin-top: 40px;
+      width: 100%;
+      text-align: center;
     }
+
+    /* الرابط الأول: اسم الجامعة (خط أكبر) */
+    .link-main {
+      display: block;
+      font-size: 17px;
+      font-weight: bold;
+      color: #0056b3;
+      text-decoration: none;
+      margin-bottom: 8px;
+    }
+
+    /* الرابط الثاني والثالث */
+    .link-sub {
+      display: block;
+      font-size: 13px;
+      color: #666666;
+      text-decoration: none;
+      margin-bottom: 6px;
+    }
+
+    .link-main:hover, .link-sub:hover {
+      text-decoration: underline;
+    }
+
+    /* الخط الفاصل الشفاف السفلي */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background-color: #e0e0e0;
+      margin: 25px 0 20px 0;
+    }
+
+    /* صندوق زر الترجمة للتركية */
+    .lang-btn {
+      background-color: #007bff;
+      color: #ffffff;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 4px;
+      font-size: 13px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
     .loader {
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid #6f42c1;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #6f42c1;
       border-radius: 50%;
-      width: 35px;
-      height: 35px;
+      width: 24px;
+      height: 24px;
       animation: spin 1s linear infinite;
-      margin: 20px auto;
+      margin: 10px auto;
+      display: none;
     }
+
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
@@ -97,79 +167,138 @@
 </head>
 <body>
 
-  <div class="container">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/ thumb/8/87/Cyprus_International_University_Logo.png/800px-Cyprus_International_University_Logo.png" alt="CIU Logo" class="logo" onerror="this.style.display='none'">
-    <h2>نظام استقطاب الطلاب</h2>
-    <p class="sub">التحقق من مستندات المرشح</p>
+  <!-- الصورة العلوية (Header Banner) من حساب GitHub الخاص بك -->
+  <img src="https://raw.githubusercontent.com/haifaaliciu2018-lang/product-verifier/main/Screenshot_2026-09-25-18-16-03-315_com.android.chrome-edit.jpg" alt="Header Banner" class="header-banner">
+
+  <div class="main-container">
+    <!-- الشعار الخاص بالجامعة -->
+    <img src="https://raw.githubusercontent.com/haifaaliciu2018-lang/product-verifier/main/IMG_20260928_002544.jpg" alt="CIU Logo" class="logo">
+
+    <!-- حقل الكود بصيغة الخط السفلي فقط -->
+    <div class="input-group">
+      <input type="text" id="codeInput" class="verification-input" placeholder="Verification Code" autocomplete="off">
+      <div id="errorMsg" class="error-msg">*this verification code cannot be found</div>
+      <div id="statusMsg" class="status-msg"></div>
+    </div>
 
     <div id="loader" class="loader"></div>
-    <div id="statusBox" class="status-box"></div>
-    
-    <div id="actionArea" style="display: none;">
-      <a id="pdfLink" href="#" target="_blank" class="btn-pdf">📄 عرض وثيقة PDF</a>
+
+    <!-- الروابط السفليّة -->
+    <div class="footer-links">
+      <a href="https://ciu.edu.tr/tr" class="link-main" id="linkMain" target="_blank">Cyprus International University</a>
+      <a href="https://intranet.ciu.edu.tr/srs/privacy" class="link-sub" id="linkPrivacy" target="_blank">Privacy Policy</a>
+      <a href="https://intranet.ciu.edu.tr/srs/privacy" class="link-sub" id="linkTerms" target="_blank">Terms and Conditions</a>
     </div>
+
+    <!-- الخط الشفاف الفاصل -->
+    <div class="divider"></div>
+
+    <!-- زر الترجمة إلى اللغة التركية -->
+    <button class="lang-btn" id="langToggleBtn" onclick="toggleLanguage()">Türkçe</button>
   </div>
 
   <script>
+    let currentLang = 'en';
+
+    // نصوص الترجمة للغة التركية والإنجليزية
+    const translations = {
+      en: {
+        placeholder: "Verification Code",
+        error: "*this verification code cannot be found",
+        privacy: "Privacy Policy",
+        terms: "Terms and Conditions",
+        langBtn: "Türkçe"
+      },
+      tr: {
+        placeholder: "Doğrulama Kodu",
+        error: "*bu doğrulama kodu bulunamadı",
+        privacy: "Gizlilik Politikası",
+        terms: "Şartlar ve Koşullar",
+        langBtn: "English"
+      }
+    };
+
     document.addEventListener("DOMContentLoaded", function() {
       const urlParams = new URLSearchParams(window.location.search);
       const code = urlParams.get('code');
+      const codeInput = document.getElementById('codeInput');
 
-      const loader = document.getElementById('loader');
-      const statusBox = document.getElementById('statusBox');
-      const actionArea = document.getElementById('actionArea');
-      const pdfLink = document.getElementById('pdfLink');
-
-      if (!code) {
-        loader.style.display = 'none';
-        statusBox.className = 'status-box status-error';
-        statusBox.innerText = 'يرجى إدخال كود وثيقة صالحة.';
-        statusBox.style.display = 'block';
-        return;
+      if (code) {
+        codeInput.value = code;
+        verifyCode(code);
       }
+
+      // إمكانية الضغط على Enter في حقل النص
+      codeInput.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          if (codeInput.value.trim()) {
+            verifyCode(codeInput.value.trim());
+          }
+        }
+      });
+    });
+
+    function verifyCode(code) {
+      const errorMsg = document.getElementById('errorMsg');
+      const statusMsg = document.getElementById('statusMsg');
+      const loader = document.getElementById('loader');
+
+      errorMsg.style.display = 'none';
+      statusMsg.style.display = 'none';
+      loader.style.display = 'block';
 
       fetch(`/api/verify-code?code=${encodeURIComponent(code.trim())}`)
         .then(response => response.json())
         .then(data => {
           loader.style.display = 'none';
 
-          if (data.status === 'authentic') {
-            statusBox.className = 'status-box status-authentic';
-            statusBox.innerHTML = `✅ تم التحقق من الوثيقة بنجاح!<br><small>${data.productName || ''}</small>`;
-            statusBox.style.display = 'block';
-
+          if (data.status === 'authentic' || data.status === 'scanned_before') {
             if (data.documentUrl) {
-              pdfLink.href = data.documentUrl;
-              actionArea.style.display = 'block';
-              // التوجيه التلقائي لفتح الـ PDF
+              // التوجيه المباشر لفتح صفحة الوثيقة PDF
               window.location.href = data.documentUrl;
+            } else {
+              statusMsg.style.color = '#28a745';
+              statusMsg.innerText = 'Verified successfully!';
+              statusMsg.style.display = 'block';
             }
-
-          } else if (data.status === 'scanned_before') {
-            statusBox.className = 'status-box status-warning';
-            statusBox.innerHTML = `⚠️ تم التحقق من هذا المستند سابقاً!<br><small>عدد مرات الفحص: ${data.scanCount}</small>`;
-            statusBox.style.display = 'block';
-
-            if (data.documentUrl) {
-              pdfLink.href = data.documentUrl;
-              actionArea.style.display = 'block';
-              // التوجيه التلقائي لفتح الـ PDF
-              window.location.href = data.documentUrl;
-            }
-
           } else {
-            statusBox.className = 'status-box status-error';
-            statusBox.innerText = '❌ رمز الوثيقة غير صالح أو غير موجود بالنظام.';
-            statusBox.style.display = 'block';
+            // كود غير موجود - إظهار الصيغة المطلوبة تحت الخط
+            errorMsg.innerText = translations[currentLang].error;
+            errorMsg.style.display = 'block';
           }
         })
         .catch(err => {
           loader.style.display = 'none';
-          statusBox.className = 'status-box status-error';
-          statusBox.innerText = 'حدث خطأ أثناء الاتصال بالسيرفر.';
-          statusBox.style.display = 'block';
+          errorMsg.innerText = translations[currentLang].error;
+          errorMsg.style.display = 'block';
         });
-    });
+    }
+
+    // دالة تبديل اللغة عند الضغط على صندوق Türkçe
+    function toggleLanguage() {
+      const codeInput = document.getElementById('codeInput');
+      const errorMsg = document.getElementById('errorMsg');
+      const linkPrivacy = document.getElementById('linkPrivacy');
+      const linkTerms = document.getElementById('linkTerms');
+      const langBtn = document.getElementById('langToggleBtn');
+
+      if (currentLang === 'en') {
+        currentLang = 'tr';
+        codeInput.placeholder = translations.tr.placeholder;
+        errorMsg.innerText = translations.tr.error;
+        linkPrivacy.innerText = translations.tr.privacy;
+        linkTerms.innerText = translations.tr.terms;
+        langBtn.innerText = translations.tr.langBtn;
+      } else {
+        currentLang = 'en';
+        codeInput.placeholder = translations.en.placeholder;
+        errorMsg.innerText = translations.en.error;
+        linkPrivacy.innerText = translations.en.privacy;
+        linkTerms.innerText = translations.en.terms;
+        langBtn.innerText = translations.en.langBtn;
+      }
+    }
   </script>
 </body>
 </html>
