@@ -5,17 +5,17 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// إعداد الاتصال بقاعدة بيانات Supabase باستخدام متغيرات البيئة
-const SUPABASE_URL = process.env.SUPABASE_URL;
+// الرابط والمفتاح مع وضع قيم افتراضية قادمة مباشر من مشروعك
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://uzsxfezdglgynjsgtqdo.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_KEY;
 
-if (!SUPABASE_URL || !SUPABASE_KEY) {
-  console.error('Error: SUPABASE_URL and SUPABASE_KEY must be set in environment variables.');
+if (!SUPABASE_KEY) {
+  console.error('Error: SUPABASE_KEY is missing!');
 }
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// تقديم الملفات الثابتة من مجلد public (مثل verify.html)
+// تقديم الملفات الثابتة من مجلد public
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
@@ -50,7 +50,7 @@ app.get('/api/verify-code', async (req, res) => {
     const currentScanCount = (record.scan_count || 0) + 1;
     const now = new Date().toISOString();
 
-    // تحديث عدد مرات الفحص وتاريخ أول فحص إذا كانت هذه المرة الأولى
+    // تحديث عدد مرات الفحص وتاريخ أول فحص
     const updateData = { scan_count: currentScanCount };
     if (!record.scanned_at) {
       updateData.scanned_at = now;
