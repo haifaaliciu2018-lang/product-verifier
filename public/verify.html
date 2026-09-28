@@ -77,7 +77,7 @@
        ========================================= */
 
     .logo {
-        width: 240px;
+        width: 400px;
         height: auto;
 
         display: block;
@@ -670,191 +670,140 @@
     /* =========================================
        التحقق
        ========================================= */
+async function verifyCode() {
 
-    async function verifyCode() {
+    const codeInput = document.getElementById('codeInput');
+    const resultMsg = document.getElementById('resultMessage');
+    const verifyBtn = document.getElementById('verifyBtn');
 
+    const code = codeInput.value.trim();
 
-        const input =
-            document.getElementById(
-                'codeInput'
-            );
+    if (!code) {
+        resultMsg.className = "result-message danger";
+        resultMsg.style.display = "block";
+        resultMsg.innerText =
+            "*this verification code cannot be found";
+        return;
+    }
 
+    resultMsg.className = "result-message";
+    resultMsg.style.display = "block";
+    resultMsg.style.color = "#666";
+    resultMsg.innerText = "Verifying document...";
 
-        const result =
-            document.getElementById(
-                'resultMessage'
-            );
+    verifyBtn.disabled = true;
 
+    try {
 
-        const button =
-            document.getElementById(
-                'verifyBtn'
-            );
+        const response = await fetch(
+            `/api/verify-code?code=${encodeURIComponent(code)}`
+        );
 
+        const data = await response.json();
 
-        const code =
-            input.value.trim();
+        console.log("Verification response:", data);
 
+        /* الكود غير موجود */
+        if (data.status === "not_found") {
 
-        const t =
-            translations[currentLang];
+            resultMsg.className =
+                "result-message danger";
 
-
-        /* إذا لم يدخل العميل كود */
-
-        if (!code) {
-
-            result.className =
-                'result-message danger';
-
-            result.style.display =
-                'block';
-
-            result.innerText =
-                t.notFoundMsg;
+            resultMsg.innerText =
+                "*this verification code cannot be found";
 
             return;
-
         }
 
 
-        /* رسالة التحقق */
+        /* خطأ في السيرفر */
+        if (data.status === "error") {
 
-        result.className =
-            'result-message';
+            resultMsg.className =
+                "result-message danger";
 
-        result.style.display =
-            'block';
+            resultMsg.innerText =
+                "*connection error, please try again later";
 
-        result.style.color =
-            '#666666';
-
-        result.innerText =
-            t.verifying;
+            return;
+        }
 
 
-        button.disabled =
-            true;
+        /* الكود صحيح */
+        if (
+            data.status === "authentic" ||
+            data.status === "scanned_before"
+        ) {
 
+            /*
+             * إذا كان رابط الوثيقة موجودًا في Supabase
+             */
+            if (data.documentUrl) {
 
-        try {
+                resultMsg.className =
+                    "result-message success";
 
-
-            const response =
-                await fetch(
-                    `/api/verify-code?code=${encodeURIComponent(code)}`
-                );
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    'HTTP Error ' +
-                    response.status
-                );
-
-            }
-
-
-            const data =
-                await response.json();
-
-
-            /* =====================================
-               الكود صحيح
-               ===================================== */
-
-            if (
-                data.status === 'authentic' ||
-                data.status === 'scanned_before'
-            ) {
-
+                resultMsg.innerText =
+                    "✓ Verification successful. Opening document...";
 
                 /*
-                 * الأفضل أن يأتي رابط الوثيقة
-                 * من قاعدة البيانات عن طريق API
+                 * الانتقال إلى الوثيقة
                  */
-
-                if (data.documentUrl) {
+                setTimeout(function () {
 
                     window.location.href =
                         data.documentUrl;
 
-                    return;
-
-                }
-
-
-                /*
-                 * الوثيقة الخاصة بالكود Ciu12345
-                 */
-
-                if (
-                    code.toLowerCase() ===
-                    'ciu12345'.toLowerCase()
-                ) {
-
-                    window.location.href =
-                        'https://drive.google.com/file/d/1g4UgwRHPpQM3fXRu3HPBnEJcAB3Xg0ed/view?usp=drivesdk';
-
-                    return;
-
-                }
-
-
-                /* في حال كان الكود صحيحًا
-                   ولكن لا توجد وثيقة */
-
-                result.className =
-                    'result-message success';
-
-                result.innerHTML =
-                    '✔ <strong>Authentic Document:</strong> ' +
-                    (data.productName || '') +
-                    '<br>' +
-                    (data.message || '');
+                }, 500);
 
                 return;
-
             }
 
 
-            /* =====================================
-               الكود غير موجود
-               ===================================== */
+            /*
+             * الكود صحيح ولكن لا يوجد رابط وثيقة
+             */
+            resultMsg.className =
+                "result-message warning";
 
-            result.className =
-                'result-message danger';
+            resultMsg.innerText =
+                "✓ Verification successful, but no document is linked to this code.";
 
-            result.innerText =
-                t.notFoundMsg;
-
-
-        } catch (error) {
-
-
-            console.error(
-                'Verification error:',
-                error
-            );
-
-
-            result.className =
-                'result-message danger';
-
-            result.innerText =
-                t.connErr;
-
-
-        } finally {
-
-            button.disabled =
-                false;
-
+            return;
         }
+
+
+        /* أي نتيجة غير معروفة */
+
+        resultMsg.className =
+            "result-message danger";
+
+        resultMsg.innerText =
+            "*this verification code cannot be found";
 
     }
 
+    catch (error) {
+
+        console.error(
+            "Verification error:",
+            error
+        );
+
+        resultMsg.className =
+            "result-message danger";
+
+        resultMsg.innerText =
+            "*connection error, please try again later";
+
+    }
+
+    finally {
+
+        verifyBtn.disabled = false;
+
+    }
+}
 
     /* =========================================
        السماح بالضغط على Enter
