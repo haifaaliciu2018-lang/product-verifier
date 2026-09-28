@@ -1,12 +1,18 @@
 <!DOCTYPE html><html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Candidate Document Verification - CIU"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Candidate Document Verification - CIU</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+>
 
 <style>
+
     * {
         box-sizing: border-box;
         margin: 0;
@@ -14,180 +20,380 @@
         font-family: 'Poppins', sans-serif;
     }
 
+    html,
     body {
-        background-color: #ffffff;
+        width: 100%;
+        min-height: 100%;
+    }
+
+    body {
+        background: #ffffff;
         color: #333333;
         display: flex;
         flex-direction: column;
-        min-height: 100vh;
         align-items: center;
+        min-height: 100vh;
     }
+
+
+    /* =========================================
+       الصورة العلوية
+       ========================================= */
 
     .hero-banner {
         width: 100%;
         height: 230px;
-        background: url('https://raw.githubusercontent.com/haifaaliciu2018-lang/product-verifier/main/Screenshot_2026-09-25-18-16-03-315_com.android.chrome-edit.jpg') center/cover no-repeat;
+
+        background-image: url(
+            'https://raw.githubusercontent.com/haifaaliciu2018-lang/product-verifier/main/Screenshot_2026-09-25-18-16-03-315_com.android.chrome-edit.jpg'
+        );
+
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
     }
+
+
+    /* =========================================
+       المحتوى الرئيسي
+       ========================================= */
 
     .main-container {
         width: 100%;
         max-width: 480px;
-        padding: 30px 20px 10px 20px;
+
+        padding: 30px 20px 10px;
+
         text-align: center;
+
         display: flex;
         flex-direction: column;
         align-items: center;
     }
 
+
+    /* =========================================
+       الشعار
+       ========================================= */
+
     .logo {
         width: 240px;
         height: auto;
-        margin-bottom: 25px;
+
+        display: block;
+
+        margin: 0 auto 25px;
     }
+
+
+    /* =========================================
+       العنوان
+       ========================================= */
 
     .system-title {
         font-size: 1.35rem;
         font-weight: 700;
+
         color: #1a1a1a;
+
         margin-bottom: 6px;
     }
 
+
     .sub-title {
         font-size: 0.9rem;
+        font-weight: 400;
+
         color: #666666;
+
         margin-bottom: 35px;
     }
 
+
+    /* =========================================
+       حقل Verification Code
+       خط سفلي فقط
+       ========================================= */
+
     .input-group {
         width: 100%;
-        margin-bottom: 15px;
+
+        margin-bottom: 0;
+
         text-align: left;
     }
 
+
     .input-field {
         width: 100%;
+
         padding: 8px 0;
+
         border: none;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+
+        border-bottom: 1px solid rgba(0, 0, 0, 0.20);
+
         background: transparent;
-        font-size: 0.95rem;
-        color: #333;
+
         outline: none;
-        transition: border-color 0.2s;
+
+        font-size: 0.95rem;
+
+        color: #333333;
+
+        transition: border-color 0.2s ease;
     }
+
 
     .input-field:focus {
         border-bottom-color: #6200ee;
     }
 
+
     .input-field::placeholder {
         color: #8b7ca6;
+
         font-style: italic;
     }
+
+
+    /* =========================================
+       رسالة التحقق
+       تظهر تحت الخط مباشرة
+       ========================================= */
 
     .result-message {
         width: 100%;
-        text-align: left;
-        font-size: 0.85rem;
+
+        min-height: 22px;
+
         margin-top: 5px;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
+
+        text-align: left;
+
+        font-size: 0.85rem;
+
         display: none;
     }
 
+
     .result-message.danger {
         color: #d93025;
+
         font-style: italic;
     }
 
+
     .result-message.success {
         color: #137333;
+
         font-weight: 500;
     }
+
 
     .result-message.warning {
         color: #b06000;
+
+        font-weight: 500;
     }
+
+
+    /* =========================================
+       زر Verify
+       ========================================= */
 
     .verify-btn {
         background: #6200ee;
+
         color: #ffffff;
+
         border: none;
+
         padding: 12px 48px;
+
         border-radius: 25px;
+
         font-size: 0.95rem;
+
         font-weight: 500;
+
         cursor: pointer;
+
         box-shadow: 0 4px 12px rgba(98, 0, 238, 0.25);
+
         transition: all 0.2s ease;
+
         margin-top: 10px;
     }
+
 
     .verify-btn:hover {
         background: #5000ca;
     }
 
+
+    .verify-btn:disabled {
+        opacity: 0.6;
+
+        cursor: wait;
+    }
+
+
+    /* =========================================
+       الفوتر والروابط
+       ========================================= */
+
     .footer {
         margin-top: auto;
+
         width: 100%;
-        padding: 25px 20px 15px 20px;
+
+        padding: 25px 20px 15px;
+
         text-align: center;
     }
 
+
+    /* الرابط الأول أكبر */
+
     .footer-link-main {
         color: #6200ee;
+
         text-decoration: none;
+
         font-size: 1.05rem;
+
         font-weight: 600;
+
         display: block;
+
         margin-bottom: 8px;
     }
 
+
+    /* الرابط الثاني والثالث أصغر */
+
     .footer-link-sub {
         color: #6200ee;
+
         text-decoration: none;
+
         font-size: 0.85rem;
+
+        font-weight: 400;
+
         display: block;
+
         margin-bottom: 6px;
+
         opacity: 0.9;
     }
+
 
     .footer a:hover {
         text-decoration: underline;
     }
 
+
+    /* =========================================
+       الخط الفاصل الشفاف
+       ========================================= */
+
     .footer-divider {
         width: 80%;
+
         max-width: 400px;
+
         height: 1px;
+
         background-color: rgba(0, 0, 0, 0.12);
-        margin: 20px auto 15px auto;
+
+        margin: 20px auto 15px;
     }
+
+
+    /* =========================================
+       زر اللغة
+       ========================================= */
 
     .lang-btn-container {
         display: flex;
+
         justify-content: center;
+
+        align-items: center;
     }
+
 
     .lang-btn-blue {
         background-color: #007bff;
+
         color: #ffffff;
+
         border: none;
+
         padding: 6px 18px;
+
         border-radius: 6px;
+
         font-size: 0.82rem;
+
         font-weight: 500;
+
         cursor: pointer;
+
         transition: background-color 0.2s ease;
     }
+
 
     .lang-btn-blue:hover {
         background-color: #0056b3;
     }
+
+
+    /* =========================================
+       الهاتف
+       ========================================= */
+
+    @media (max-width: 480px) {
+
+        .hero-banner {
+            height: 210px;
+        }
+
+        .main-container {
+            padding-top: 28px;
+        }
+
+        .logo {
+            width: 220px;
+        }
+
+        .system-title {
+            font-size: 1.25rem;
+        }
+
+    }
+
 </style>
 
-</head><body><div class="hero-banner"></div>
+</head><body><!-- =========================================
+     الصورة العلوية
+     لا توجد أي كتابة إضافية فوق الصورة
+     ========================================= -->
 
-<div class="main-container">
+<div class="hero-banner"></div>
+
+
+<!-- =========================================
+     المحتوى الرئيسي
+     ========================================= -->
+
+<main class="main-container">
+
+
+    <!-- الشعار -->
 
     <img
         src="https://raw.githubusercontent.com/haifaaliciu2018-lang/product-verifier/main/IMG_20260928_002544.jpg"
@@ -195,15 +401,29 @@
         class="logo"
     >
 
-    <h1 id="sysTitle" class="system-title">
+
+    <!-- العنوان -->
+
+    <h1
+        id="sysTitle"
+        class="system-title"
+    >
         Student Recruitment System
     </h1>
 
-    <p id="sysSubTitle" class="sub-title">
+
+    <p
+        id="sysSubTitle"
+        class="sub-title"
+    >
         Candidate Document Verification
     </p>
 
+
+    <!-- Verification Code -->
+
     <div class="input-group">
+
         <input
             type="text"
             id="codeInput"
@@ -211,153 +431,286 @@
             placeholder="Verification Code"
             autocomplete="off"
         >
+
     </div>
 
-    <div id="resultMessage" class="result-message"></div>
+
+    <!-- الرسالة تظهر هنا مباشرة تحت الخط -->
+
+    <div
+        id="resultMessage"
+        class="result-message"
+    ></div>
+
+
+    <!-- زر التحقق -->
 
     <button
         id="verifyBtn"
-        onclick="verifyCode()"
         class="verify-btn"
+        onclick="verifyCode()"
     >
         Verify
     </button>
 
-</div>
 
-<div class="footer">
+</main>
+
+
+<!-- =========================================
+     أسفل الصفحة
+     ========================================= -->
+
+<footer class="footer">
+
+
+    <!-- الرابط الأول -->
 
     <a
         href="https://ciu.edu.tr/tr"
         target="_blank"
+        rel="noopener noreferrer"
         class="footer-link-main"
     >
         Cyprus International University
     </a>
 
+
+    <!-- الرابط الثاني -->
+
     <a
         href="https://intranet.ciu.edu.tr/srs/privacy"
         target="_blank"
+        rel="noopener noreferrer"
         id="privacyLink"
         class="footer-link-sub"
     >
         Privacy Policy
     </a>
 
+
+    <!-- الرابط الثالث -->
+
     <a
         href="https://intranet.ciu.edu.tr/srs/privacy"
         target="_blank"
+        rel="noopener noreferrer"
         id="termsLink"
         class="footer-link-sub"
     >
         Terms and Conditions
     </a>
 
+
+    <!-- الخط الشفاف -->
+
     <div class="footer-divider"></div>
 
+
+    <!-- زر الترجمة -->
+
     <div class="lang-btn-container">
+
         <button
             id="langToggleBtn"
-            onclick="toggleLanguage()"
             class="lang-btn-blue"
+            onclick="toggleLanguage()"
         >
             Türkçe
         </button>
+
     </div>
 
-</div>
+
+</footer>
+
 
 <script>
 
+
+    /* =========================================
+       اللغة
+       ========================================= */
+
     let currentLang = 'en';
+
 
     const translations = {
 
         en: {
+
             langBtnText: "Türkçe",
-            sysTitle: "Student Recruitment System",
-            sysSubTitle: "Candidate Document Verification",
-            placeholder: "Verification Code",
-            verifyBtn: "Verify",
-            privacyLink: "Privacy Policy",
-            termsLink: "Terms and Conditions",
-            notFoundMsg: "*this verification code cannot be found",
-            verifying: "Verifying document...",
-            connErr: "*connection error, please try again later"
+
+            sysTitle:
+                "Student Recruitment System",
+
+            sysSubTitle:
+                "Candidate Document Verification",
+
+            placeholder:
+                "Verification Code",
+
+            verifyBtn:
+                "Verify",
+
+            privacyLink:
+                "Privacy Policy",
+
+            termsLink:
+                "Terms and Conditions",
+
+            notFoundMsg:
+                "*this verification code cannot be found",
+
+            verifying:
+                "Verifying document...",
+
+            connErr:
+                "*connection error, please try again later"
+
         },
 
+
         tr: {
+
             langBtnText: "English",
-            sysTitle: "Öğrenci Temin Sistemi",
-            sysSubTitle: "Aday Belge Doğrulama",
-            placeholder: "Doğrulama Kodu",
-            verifyBtn: "Doğrula",
-            privacyLink: "Gizlilik Politikası",
-            termsLink: "Şartlar ve Koşullar",
-            notFoundMsg: "*bu doğrulama kodu bulunamadı",
-            verifying: "Belge doğrulanıyor...",
-            connErr: "*bağlantı hatası, lütfen daha sonra tekrar deneyin"
+
+            sysTitle:
+                "Öğrenci Temin Sistemi",
+
+            sysSubTitle:
+                "Aday Belge Doğrulama",
+
+            placeholder:
+                "Doğrulama Kodu",
+
+            verifyBtn:
+                "Doğrula",
+
+            privacyLink:
+                "Gizlilik Politikası",
+
+            termsLink:
+                "Şartlar ve Koşullar",
+
+            notFoundMsg:
+                "*bu doğrulama kodu bulunamadı",
+
+            verifying:
+                "Belge doğrulanıyor...",
+
+            connErr:
+                "*bağlantı hatası, lütfen daha sonra tekrar deneyin"
+
         }
 
     };
 
 
+    /* =========================================
+       تبديل اللغة
+       ========================================= */
+
     function toggleLanguage() {
 
-        currentLang = (currentLang === 'en') ? 'tr' : 'en';
+        currentLang =
+            currentLang === 'en'
+                ? 'tr'
+                : 'en';
 
-        const t = translations[currentLang];
 
-        document.getElementById('langToggleBtn').innerText = t.langBtnText;
-        document.getElementById('sysTitle').innerText = t.sysTitle;
-        document.getElementById('sysSubTitle').innerText = t.sysSubTitle;
-        document.getElementById('codeInput').placeholder = t.placeholder;
-        document.getElementById('verifyBtn').innerText = t.verifyBtn;
-        document.getElementById('privacyLink').innerText = t.privacyLink;
-        document.getElementById('termsLink').innerText = t.termsLink;
+        const t =
+            translations[currentLang];
+
+
+        document.getElementById(
+            'langToggleBtn'
+        ).innerText =
+            t.langBtnText;
+
+
+        document.getElementById(
+            'sysTitle'
+        ).innerText =
+            t.sysTitle;
+
+
+        document.getElementById(
+            'sysSubTitle'
+        ).innerText =
+            t.sysSubTitle;
+
+
+        document.getElementById(
+            'codeInput'
+        ).placeholder =
+            t.placeholder;
+
+
+        document.getElementById(
+            'verifyBtn'
+        ).innerText =
+            t.verifyBtn;
+
+
+        document.getElementById(
+            'privacyLink'
+        ).innerText =
+            t.privacyLink;
+
+
+        document.getElementById(
+            'termsLink'
+        ).innerText =
+            t.termsLink;
 
     }
 
 
-    window.onload = function() {
-
-        const params = new URLSearchParams(window.location.search);
-
-        const code = params.get('code');
-
-        if (code) {
-
-            document.getElementById('codeInput').value = code;
-
-            verifyCode();
-
-        }
-
-    };
-
+    /* =========================================
+       التحقق
+       ========================================= */
 
     async function verifyCode() {
 
-        const codeInput =
-            document.getElementById('codeInput').value.trim();
 
-        const resultMsg =
-            document.getElementById('resultMessage');
-
-        const verifyBtn =
-            document.getElementById('verifyBtn');
-
-        const t = translations[currentLang];
+        const input =
+            document.getElementById(
+                'codeInput'
+            );
 
 
-        if (!codeInput) {
+        const result =
+            document.getElementById(
+                'resultMessage'
+            );
 
-            resultMsg.className =
-                "result-message danger";
 
-            resultMsg.style.display = "block";
+        const button =
+            document.getElementById(
+                'verifyBtn'
+            );
 
-            resultMsg.innerText =
+
+        const code =
+            input.value.trim();
+
+
+        const t =
+            translations[currentLang];
+
+
+        /* إذا لم يدخل العميل كود */
+
+        if (!code) {
+
+            result.className =
+                'result-message danger';
+
+            result.style.display =
+                'block';
+
+            result.innerText =
                 t.notFoundMsg;
 
             return;
@@ -365,49 +718,63 @@
         }
 
 
-        resultMsg.className =
-            "result-message";
+        /* رسالة التحقق */
 
-        resultMsg.style.display =
-            "block";
+        result.className =
+            'result-message';
 
-        resultMsg.style.color =
-            "#666";
+        result.style.display =
+            'block';
 
-        resultMsg.innerText =
+        result.style.color =
+            '#666666';
+
+        result.innerText =
             t.verifying;
 
-        verifyBtn.disabled = true;
+
+        button.disabled =
+            true;
 
 
         try {
 
-            const response = await fetch(
-                `/api/verify-code?code=${encodeURIComponent(codeInput)}`
-            );
+
+            const response =
+                await fetch(
+                    `/api/verify-code?code=${encodeURIComponent(code)}`
+                );
 
 
             if (!response.ok) {
 
                 throw new Error(
-                    "Server error: " + response.status
+                    'HTTP Error ' +
+                    response.status
                 );
 
             }
 
 
-            const data = await response.json();
+            const data =
+                await response.json();
 
 
-            /*
-             * إذا كان الكود صحيحاً
-             */
-            if (data.status === 'authentic') {
+            /* =====================================
+               الكود صحيح
+               ===================================== */
+
+            if (
+                data.status === 'authentic' ||
+                data.status === 'scanned_before'
+            ) {
+
 
                 /*
-                 * إذا كان السيرفر يعيد documentUrl
-                 * نفتح الوثيقة المرتبطة بالكود.
+                 * الأفضل أن يأتي رابط الوثيقة
+                 * من قاعدة البيانات عن طريق API
                  */
+
                 if (data.documentUrl) {
 
                     window.location.href =
@@ -419,10 +786,13 @@
 
 
                 /*
-                 * في حال كان الكود Ciu12345
-                 * والـ API لم يُرجع documentUrl بعد.
+                 * الوثيقة الخاصة بالكود Ciu12345
                  */
-                if (codeInput.toLowerCase() === 'ciu12345') {
+
+                if (
+                    code.toLowerCase() ===
+                    'ciu12345'.toLowerCase()
+                ) {
 
                     window.location.href =
                         'https://drive.google.com/file/d/1g4UgwRHPpQM3fXRu3HPBnEJcAB3Xg0ed/view?usp=drivesdk';
@@ -432,83 +802,116 @@
                 }
 
 
-                resultMsg.className =
-                    "result-message success";
+                /* في حال كان الكود صحيحًا
+                   ولكن لا توجد وثيقة */
 
-                resultMsg.innerHTML =
-                    `✔ <strong>Authentic Document:</strong> ${data.productName || ''}<br>${data.message || ''}`;
+                result.className =
+                    'result-message success';
 
-            }
+                result.innerHTML =
+                    '✔ <strong>Authentic Document:</strong> ' +
+                    (data.productName || '') +
+                    '<br>' +
+                    (data.message || '');
 
-
-            else if (data.status === 'scanned_before') {
-
-                /*
-                 * حتى إذا تم فحص الكود سابقاً،
-                 * نفتح الوثيقة أيضاً إذا كان الرابط موجوداً.
-                 */
-                if (data.documentUrl) {
-
-                    window.location.href =
-                        data.documentUrl;
-
-                    return;
-
-                }
-
-
-                if (codeInput.toLowerCase() === 'ciu12345') {
-
-                    window.location.href =
-                        'https://drive.google.com/file/d/1g4UgwRHPpQM3fXRu3HPBnEJcAB3Xg0ed/view?usp=drivesdk';
-
-                    return;
-
-                }
-
-
-                resultMsg.className =
-                    "result-message warning";
-
-                resultMsg.innerHTML =
-                    `⚠️ <strong>Verified Previously:</strong> ${data.productName || ''}<br>${data.message || ''}`;
+                return;
 
             }
 
 
-            else {
+            /* =====================================
+               الكود غير موجود
+               ===================================== */
 
-                resultMsg.className =
-                    "result-message danger";
+            result.className =
+                'result-message danger';
 
-                resultMsg.innerText =
-                    t.notFoundMsg;
-
-            }
-
-        }
+            result.innerText =
+                t.notFoundMsg;
 
 
-        catch (err) {
+        } catch (error) {
 
-            console.error(err);
 
-            resultMsg.className =
-                "result-message danger";
+            console.error(
+                'Verification error:',
+                error
+            );
 
-            resultMsg.innerText =
+
+            result.className =
+                'result-message danger';
+
+            result.innerText =
                 t.connErr;
 
-        }
 
+        } finally {
 
-        finally {
-
-            verifyBtn.disabled = false;
+            button.disabled =
+                false;
 
         }
 
     }
+
+
+    /* =========================================
+       السماح بالضغط على Enter
+       ========================================= */
+
+    document
+        .getElementById('codeInput')
+        .addEventListener(
+            'keydown',
+            function(event) {
+
+                if (
+                    event.key === 'Enter'
+                ) {
+
+                    verifyCode();
+
+                }
+
+            }
+        );
+
+
+    /* =========================================
+       إذا جاء الكود في الرابط
+       
+       مثال:
+       /verify.html?code=Ciu12345
+       ========================================= */
+
+    window.addEventListener(
+        'DOMContentLoaded',
+        function() {
+
+            const params =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+
+            const code =
+                params.get('code');
+
+
+            if (code) {
+
+                document.getElementById(
+                    'codeInput'
+                ).value =
+                    code;
+
+                verifyCode();
+
+            }
+
+        }
+    );
 
 </script>
 
