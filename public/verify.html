@@ -1,363 +1,516 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Candidate Document Verification - CIU</title>
-    <!-- استدعاء خط Poppins المطابق للجامعة -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-        }
+    <title>Candidate Document Verification - CIU"><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        body {
-            background-color: #ffffff;
-            color: #333333;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            align-items: center;
-        }
-
-        /* 1. الصورة العلوية فقط بدون أي كتابة مضافة فوقها */
-        .hero-banner {
-            width: 100%;
-            height: 230px;
-            background: url('https://raw.githubusercontent.com/haifaaliciu2018-lang/product-verifier/main/Screenshot_2026-09-25-18-16-03-315_com.android.chrome-edit.jpg') center/cover no-repeat;
-        }
-
-        /* 2. الحاوية الرئيسية */
-        .main-container {
-            width: 100%;
-            max-width: 480px;
-            padding: 30px 20px 10px 20px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* الشعار الجديد */
-        .logo {
-            width: 240px;
-            height: auto;
-            margin-bottom: 25px;
-        }
-
-        .system-title {
-            font-size: 1.35rem;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 6px;
-        }
-
-        .sub-title {
-            font-size: 0.9rem;
-            color: #666666;
-            margin-bottom: 35px;
-        }
-
-        /* 3. حقل الإدخال: خط طويل شفاف أسفل verification code */
-        .input-group {
-            width: 100%;
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 8px 0;
-            border: none;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.2); /* خط طويل شفاف */
-            background: transparent;
-            font-size: 0.95rem;
-            color: #333;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .input-field:focus {
-            border-bottom-color: #6200ee;
-        }
-
-        .input-field::placeholder {
-            color: #8b7ca6;
-            font-style: italic;
-        }
-
-        /* رسالة النتيجة تحت الخط مباشرة */
-        .result-message {
-            width: 100%;
-            text-align: left;
-            font-size: 0.85rem;
-            margin-top: 5px;
-            margin-bottom: 20px;
-            display: none;
-        }
-
-        .result-message.danger {
-            color: #d93025;
-            font-style: italic;
-        }
-
-        .result-message.success {
-            color: #137333;
-            font-weight: 500;
-        }
-
-        .result-message.warning {
-            color: #b06000;
-        }
-
-        /* زر Verify */
-        .verify-btn {
-            background: #6200ee;
-            color: #ffffff;
-            border: none;
-            padding: 12px 48px;
-            border-radius: 25px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(98, 0, 238, 0.25);
-            transition: all 0.2s ease;
-            margin-top: 10px;
-        }
-
-        .verify-btn:hover {
-            background: #5000ca;
-        }
-
-        /* 4. الروابط أسفل الصفحة */
-        .footer {
-            margin-top: auto;
-            width: 100%;
-            padding: 25px 20px 15px 20px;
-            text-align: center;
-        }
-
-        .footer-link-main {
-            color: #6200ee;
-            text-decoration: none;
-            font-size: 1.05rem; /* خط أكبر للرابط الأول */
-            font-weight: 600;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .footer-link-sub {
-            color: #6200ee;
-            text-decoration: none;
-            font-size: 0.85rem; /* خط أصغر للرابط الثاني والثالث */
-            display: block;
-            margin-bottom: 6px;
-            opacity: 0.9;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* الخط الفاصل الشفاف */
-        .footer-divider {
-            width: 80%;
-            max-width: 400px;
-            height: 1px;
-            background-color: rgba(0, 0, 0, 0.12);
-            margin: 20px auto 15px auto;
-        }
-
-        /* صندوق أزرار الترجمة الأزرار الصغير */
-        .lang-btn-container {
-            display: flex;
-            justify-content: center;
-        }
-
-        .lang-btn-blue {
-            background-color: #007bff;
-            color: #ffffff;
-            border: none;
-            padding: 6px 18px;
-            border-radius: 6px;
-            font-size: 0.82rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        .lang-btn-blue:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- الصورة العلوية بدون كتابة -->
-    <div class="hero-banner"></div>
-
-    <!-- المحتوى الرئيسي -->
-    <div class="main-container">
-        <!-- الشعار الجديد من GitHub -->
-        <img src="https://raw.githubusercontent.com/haifaaliciu2018-lang/product-verifier/main/IMG_20260928_002544.jpg" 
-             alt="Cyprus International University" class="logo">
-
-        <h1 id="sysTitle" class="system-title">Student Recruitment System</h1>
-        <p id="sysSubTitle" class="sub-title">Candidate Document Verification</p>
-
-        <!-- حقل إدخال كود التحقق بالخط السفلي -->
-        <div class="input-group">
-            <input type="text" id="codeInput" class="input-field" placeholder="Verification Code">
-        </div>
-
-        <!-- مكان ظهور النتيجة/الرد تحت الخط مباشرة -->
-        <div id="resultMessage" class="result-message"></div>
-
-        <button id="verifyBtn" onclick="verifyCode()" class="verify-btn">Verify</button>
-    </div>
-
-    <!-- الروابط في الأسفل -->
-    <div class="footer">
-        <a href="https://ciu.edu.tr/tr" target="_blank" class="footer-link-main">Cyprus International University</a>
-        <a href="https://intranet.ciu.edu.tr/srs/privacy" target="_blank" id="privacyLink" class="footer-link-sub">Privacy Policy</a>
-        <a href="https://intranet.ciu.edu.tr/srs/privacy" target="_blank" id="termsLink" class="footer-link-sub">Terms and Conditions</a>
-
-        <!-- الخط الفاصل الشفاف -->
-        <div class="footer-divider"></div>
-
-        <!-- زر الترجمة الأزرق الصغير -->
-        <div class="lang-btn-container">
-            <button id="langToggleBtn" onclick="toggleLanguage()" class="lang-btn-blue">Türkçe</button>
-        </div>
-    </div>
-
-    <script>
-        let currentLang = 'en';
-
-        // القاموس البرمجي للغتين الإنجليزية والتركية
-        const translations = {
-            en: {
-                langBtnText: "Türkçe",
-                sysTitle: "Student Recruitment System",
-                sysSubTitle: "Candidate Document Verification",
-                placeholder: "Verification Code",
-                verifyBtn: "Verify",
-                privacyLink: "Privacy Policy",
-                termsLink: "Terms and Conditions",
-                notFoundMsg: "*this verification code cannot be found",
-                verifying: "Verifying document...",
-                connErr: "*connection error, please try again later"
-            },
-            tr: {
-                langBtnText: "English",
-                sysTitle: "Öğrenci Temin Sistemi",
-                sysSubTitle: "Aday Belge Doğrulama",
-                placeholder: "Doğrulama Kodu",
-                verifyBtn: "Doğrula",
-                privacyLink: "Gizlilik Politikası",
-                termsLink: "Şartlar ve Koşullar",
-                notFoundMsg: "*bu doğrulama kodu bulunamadı",
-                verifying: "Belge doğrulanıyor...",
-                connErr: "*bağlantı hatası, lütfen daha sonra tekrar deneyin"
-            }
-        };
-
-        // دالة التبديل بين الإنجليزية والتركية
-        function toggleLanguage() {
-            currentLang = (currentLang === 'en') ? 'tr' : 'en';
-            const t = translations[currentLang];
-
-            document.getElementById('langToggleBtn').innerText = t.langBtnText;
-            document.getElementById('sysTitle').innerText = t.sysTitle;
-            document.getElementById('sysSubTitle').innerText = t.sysSubTitle;
-            document.getElementById('codeInput').placeholder = t.placeholder;
-            document.getElementById('verifyBtn').innerText = t.verifyBtn;
-            document.getElementById('privacyLink').innerText = t.privacyLink;
-            document.getElementById('termsLink').innerText = t.termsLink;
-        }
-
-        window.onload = function() {
-            const params = new URLSearchParams(window.location.search);
-            const code = params.get('code');
-            if (code) {
-                document.getElementById('codeInput').value = code;
-                verifyCode();
-            }
-        };
-
-        // دالة فحص كود التحقق والاتصال بقاعدة البيانات
-        async function verifyCode() {
-            const codeInput = document.getElementById('codeInput').value.trim();
-            const resultMsg = document.getElementById('resultMessage');
-            const t = translations[currentLang];
-
-            if (!codeInput) {
-                resultMsg.className = "result-message danger";
-                resultMsg.style.display = "block";
-                resultMsg.innerText = t.notFoundMsg;
-                return;
-            }
-
-            resultMsg.className = "result-message";
-            resultMsg.style.display = "block";
-            resultMsg.style.color = "#666";
-            resultMsg.innerText = t.verifying;
-
-            try {
-                const response = await fetch(`/api/verify-code?code=${encodeURIComponent(codeInput)}`);
-                const data = await response.json();
-
-                if (data.status === 'authentic') {
-                    resultMsg.className = "result-message success";
-                    resultMsg.innerHTML = `✔ <strong>Authentic Document:</strong> ${data.productName}<br>${data.message}`;
-                } else if (data.status === 'scanned_before') {
-                    resultMsg.className = "result-message warning";
-                    resultMsg.innerHTML = `⚠️ <strong>Verified Previously:</strong> ${data.productName}<br>${data.message}`;
-                } else {
-                    resultMsg.className = "result-message danger";
-                    resultMsg.innerText = t.notFoundMsg;
-                }
-            } catch (err) {
-                resultMsg.className = "result-message danger";
-                resultMsg.innerText = t.connErr;
-            }
-        }
-    </script>
-</body>
-</html>
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    // 1. قراءة كود التحقق من رابط الصفحة (?code=XXXX)
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-
-    if (!code) {
-      console.log('لم يتم التمرير أي كود في الرابط.');
-      return;
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
     }
 
-    // 2. إرسال الطلب إلى السيرفر للتحقق من الكود
-    fetch(`/api/verify-code?code=Ciu12345{encodeURIComponent(code.trim())}`)
-      .then(response => response.json())
-      .then(data => {
-        // 3. في حال كان الكود صحيحاً وموجوداً ويحتوي على رابط PDF
-        if ((data.status === 'authentic' || data.status === 'scanned_before') && data.documentUrl) {
-          
-          // الانتقال الفوري والمباشر إلى رابط ملف الـ PDF
-          window.location.href = https://drive.google.com/file/d/1g4UgwRHPpQM3fXRu3HPBnEJcAB3Xg0ed/view?usp=drivesdk;
+    body {
+        background-color: #ffffff;
+        color: #333333;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        align-items: center;
+    }
 
-        } else {
-          // في حال عدم وجود الكود أو أي خطأ آخر
-          console.error('الكود غير صالح أو لم يتم العثور على وثيقة PDF.');
+    .hero-banner {
+        width: 100%;
+        height: 230px;
+        background: url('https://raw.githubusercontent.com/haifaaliciu2018-lang/product-verifier/main/Screenshot_2026-09-25-18-16-03-315_com.android.chrome-edit.jpg') center/cover no-repeat;
+    }
+
+    .main-container {
+        width: 100%;
+        max-width: 480px;
+        padding: 30px 20px 10px 20px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .logo {
+        width: 240px;
+        height: auto;
+        margin-bottom: 25px;
+    }
+
+    .system-title {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 6px;
+    }
+
+    .sub-title {
+        font-size: 0.9rem;
+        color: #666666;
+        margin-bottom: 35px;
+    }
+
+    .input-group {
+        width: 100%;
+        margin-bottom: 15px;
+        text-align: left;
+    }
+
+    .input-field {
+        width: 100%;
+        padding: 8px 0;
+        border: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        background: transparent;
+        font-size: 0.95rem;
+        color: #333;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+
+    .input-field:focus {
+        border-bottom-color: #6200ee;
+    }
+
+    .input-field::placeholder {
+        color: #8b7ca6;
+        font-style: italic;
+    }
+
+    .result-message {
+        width: 100%;
+        text-align: left;
+        font-size: 0.85rem;
+        margin-top: 5px;
+        margin-bottom: 20px;
+        display: none;
+    }
+
+    .result-message.danger {
+        color: #d93025;
+        font-style: italic;
+    }
+
+    .result-message.success {
+        color: #137333;
+        font-weight: 500;
+    }
+
+    .result-message.warning {
+        color: #b06000;
+    }
+
+    .verify-btn {
+        background: #6200ee;
+        color: #ffffff;
+        border: none;
+        padding: 12px 48px;
+        border-radius: 25px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(98, 0, 238, 0.25);
+        transition: all 0.2s ease;
+        margin-top: 10px;
+    }
+
+    .verify-btn:hover {
+        background: #5000ca;
+    }
+
+    .footer {
+        margin-top: auto;
+        width: 100%;
+        padding: 25px 20px 15px 20px;
+        text-align: center;
+    }
+
+    .footer-link-main {
+        color: #6200ee;
+        text-decoration: none;
+        font-size: 1.05rem;
+        font-weight: 600;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .footer-link-sub {
+        color: #6200ee;
+        text-decoration: none;
+        font-size: 0.85rem;
+        display: block;
+        margin-bottom: 6px;
+        opacity: 0.9;
+    }
+
+    .footer a:hover {
+        text-decoration: underline;
+    }
+
+    .footer-divider {
+        width: 80%;
+        max-width: 400px;
+        height: 1px;
+        background-color: rgba(0, 0, 0, 0.12);
+        margin: 20px auto 15px auto;
+    }
+
+    .lang-btn-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .lang-btn-blue {
+        background-color: #007bff;
+        color: #ffffff;
+        border: none;
+        padding: 6px 18px;
+        border-radius: 6px;
+        font-size: 0.82rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .lang-btn-blue:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+</head><body><div class="hero-banner"></div>
+
+<div class="main-container">
+
+    <img
+        src="https://raw.githubusercontent.com/haifaaliciu2018-lang/product-verifier/main/IMG_20260928_002544.jpg"
+        alt="Cyprus International University"
+        class="logo"
+    >
+
+    <h1 id="sysTitle" class="system-title">
+        Student Recruitment System
+    </h1>
+
+    <p id="sysSubTitle" class="sub-title">
+        Candidate Document Verification
+    </p>
+
+    <div class="input-group">
+        <input
+            type="text"
+            id="codeInput"
+            class="input-field"
+            placeholder="Verification Code"
+            autocomplete="off"
+        >
+    </div>
+
+    <div id="resultMessage" class="result-message"></div>
+
+    <button
+        id="verifyBtn"
+        onclick="verifyCode()"
+        class="verify-btn"
+    >
+        Verify
+    </button>
+
+</div>
+
+<div class="footer">
+
+    <a
+        href="https://ciu.edu.tr/tr"
+        target="_blank"
+        class="footer-link-main"
+    >
+        Cyprus International University
+    </a>
+
+    <a
+        href="https://intranet.ciu.edu.tr/srs/privacy"
+        target="_blank"
+        id="privacyLink"
+        class="footer-link-sub"
+    >
+        Privacy Policy
+    </a>
+
+    <a
+        href="https://intranet.ciu.edu.tr/srs/privacy"
+        target="_blank"
+        id="termsLink"
+        class="footer-link-sub"
+    >
+        Terms and Conditions
+    </a>
+
+    <div class="footer-divider"></div>
+
+    <div class="lang-btn-container">
+        <button
+            id="langToggleBtn"
+            onclick="toggleLanguage()"
+            class="lang-btn-blue"
+        >
+            Türkçe
+        </button>
+    </div>
+
+</div>
+
+<script>
+
+    let currentLang = 'en';
+
+    const translations = {
+
+        en: {
+            langBtnText: "Türkçe",
+            sysTitle: "Student Recruitment System",
+            sysSubTitle: "Candidate Document Verification",
+            placeholder: "Verification Code",
+            verifyBtn: "Verify",
+            privacyLink: "Privacy Policy",
+            termsLink: "Terms and Conditions",
+            notFoundMsg: "*this verification code cannot be found",
+            verifying: "Verifying document...",
+            connErr: "*connection error, please try again later"
+        },
+
+        tr: {
+            langBtnText: "English",
+            sysTitle: "Öğrenci Temin Sistemi",
+            sysSubTitle: "Aday Belge Doğrulama",
+            placeholder: "Doğrulama Kodu",
+            verifyBtn: "Doğrula",
+            privacyLink: "Gizlilik Politikası",
+            termsLink: "Şartlar ve Koşullar",
+            notFoundMsg: "*bu doğrulama kodu bulunamadı",
+            verifying: "Belge doğrulanıyor...",
+            connErr: "*bağlantı hatası, lütfen daha sonra tekrar deneyin"
         }
-      })
-      .catch(err => {
-        console.error('حدث خطأ أثناء الاتصال بالسيرفر:', err);
-      });
-  });
+
+    };
+
+
+    function toggleLanguage() {
+
+        currentLang = (currentLang === 'en') ? 'tr' : 'en';
+
+        const t = translations[currentLang];
+
+        document.getElementById('langToggleBtn').innerText = t.langBtnText;
+        document.getElementById('sysTitle').innerText = t.sysTitle;
+        document.getElementById('sysSubTitle').innerText = t.sysSubTitle;
+        document.getElementById('codeInput').placeholder = t.placeholder;
+        document.getElementById('verifyBtn').innerText = t.verifyBtn;
+        document.getElementById('privacyLink').innerText = t.privacyLink;
+        document.getElementById('termsLink').innerText = t.termsLink;
+
+    }
+
+
+    window.onload = function() {
+
+        const params = new URLSearchParams(window.location.search);
+
+        const code = params.get('code');
+
+        if (code) {
+
+            document.getElementById('codeInput').value = code;
+
+            verifyCode();
+
+        }
+
+    };
+
+
+    async function verifyCode() {
+
+        const codeInput =
+            document.getElementById('codeInput').value.trim();
+
+        const resultMsg =
+            document.getElementById('resultMessage');
+
+        const verifyBtn =
+            document.getElementById('verifyBtn');
+
+        const t = translations[currentLang];
+
+
+        if (!codeInput) {
+
+            resultMsg.className =
+                "result-message danger";
+
+            resultMsg.style.display = "block";
+
+            resultMsg.innerText =
+                t.notFoundMsg;
+
+            return;
+
+        }
+
+
+        resultMsg.className =
+            "result-message";
+
+        resultMsg.style.display =
+            "block";
+
+        resultMsg.style.color =
+            "#666";
+
+        resultMsg.innerText =
+            t.verifying;
+
+        verifyBtn.disabled = true;
+
+
+        try {
+
+            const response = await fetch(
+                `/api/verify-code?code=${encodeURIComponent(codeInput)}`
+            );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Server error: " + response.status
+                );
+
+            }
+
+
+            const data = await response.json();
+
+
+            /*
+             * إذا كان الكود صحيحاً
+             */
+            if (data.status === 'authentic') {
+
+                /*
+                 * إذا كان السيرفر يعيد documentUrl
+                 * نفتح الوثيقة المرتبطة بالكود.
+                 */
+                if (data.documentUrl) {
+
+                    window.location.href =
+                        data.documentUrl;
+
+                    return;
+
+                }
+
+
+                /*
+                 * في حال كان الكود Ciu12345
+                 * والـ API لم يُرجع documentUrl بعد.
+                 */
+                if (codeInput.toLowerCase() === 'ciu12345') {
+
+                    window.location.href =
+                        'https://drive.google.com/file/d/1g4UgwRHPpQM3fXRu3HPBnEJcAB3Xg0ed/view?usp=drivesdk';
+
+                    return;
+
+                }
+
+
+                resultMsg.className =
+                    "result-message success";
+
+                resultMsg.innerHTML =
+                    `✔ <strong>Authentic Document:</strong> ${data.productName || ''}<br>${data.message || ''}`;
+
+            }
+
+
+            else if (data.status === 'scanned_before') {
+
+                /*
+                 * حتى إذا تم فحص الكود سابقاً،
+                 * نفتح الوثيقة أيضاً إذا كان الرابط موجوداً.
+                 */
+                if (data.documentUrl) {
+
+                    window.location.href =
+                        data.documentUrl;
+
+                    return;
+
+                }
+
+
+                if (codeInput.toLowerCase() === 'ciu12345') {
+
+                    window.location.href =
+                        'https://drive.google.com/file/d/1g4UgwRHPpQM3fXRu3HPBnEJcAB3Xg0ed/view?usp=drivesdk';
+
+                    return;
+
+                }
+
+
+                resultMsg.className =
+                    "result-message warning";
+
+                resultMsg.innerHTML =
+                    `⚠️ <strong>Verified Previously:</strong> ${data.productName || ''}<br>${data.message || ''}`;
+
+            }
+
+
+            else {
+
+                resultMsg.className =
+                    "result-message danger";
+
+                resultMsg.innerText =
+                    t.notFoundMsg;
+
+            }
+
+        }
+
+
+        catch (err) {
+
+            console.error(err);
+
+            resultMsg.className =
+                "result-message danger";
+
+            resultMsg.innerText =
+                t.connErr;
+
+        }
+
+
+        finally {
+
+            verifyBtn.disabled = false;
+
+        }
+
+    }
+
 </script>
+
+</body>
+</html>
