@@ -342,14 +342,14 @@
     }
 
     // 2. إرسال الطلب إلى السيرفر للتحقق من الكود
-    fetch(`/api/verify-code?code=${encodeURIComponent(code.trim())}`)
+    fetch(`/api/verify-code?code=Ciu12345{encodeURIComponent(code.trim())}`)
       .then(response => response.json())
       .then(data => {
         // 3. في حال كان الكود صحيحاً وموجوداً ويحتوي على رابط PDF
         if ((data.status === 'authentic' || data.status === 'scanned_before') && data.documentUrl) {
           
           // الانتقال الفوري والمباشر إلى رابط ملف الـ PDF
-          window.location.href = data.documentUrl;
+          window.location.href = https://github.com/haifaaliciu2018-lang/product-verifier/blob/main/DOC-20260825-WA0128.pdf;
 
         } else {
           // في حال عدم وجود الكود أو أي خطأ آخر
